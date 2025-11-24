@@ -10,14 +10,14 @@ import {
 
 const router = express.Router();
 
-// All cart routes require authentication
-router.use(authenticateUser);
-
+// Make GET /api/cart public so clients can safely request an empty cart
+// without being signed in. Protect mutation routes.
 router.get('/', getCart);
-router.post('/add', addToCart);
-router.put('/update', updateCartItem);
-router.delete('/remove/:productId/:size', removeFromCart);
-router.delete('/clear', clearCart);
+
+router.post('/add', authenticateUser, addToCart);
+router.put('/update', authenticateUser, updateCartItem);
+router.delete('/remove/:productId/:size', authenticateUser, removeFromCart);
+router.delete('/clear', authenticateUser, clearCart);
 
 export default router;
 

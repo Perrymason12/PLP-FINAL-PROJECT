@@ -9,8 +9,26 @@ const ListProduct = () => {
 
   const handleToggleStock = async (productId) => {
     try {
-      const token = await getToken()
-      const data = await api.toggleStock(productId, token)
+      let token = await getToken()
+      let data = await api.toggleStock(productId, token)
+      
+      // If unauthorized, try to refresh token
+      if (data && data.status === 401) {
+        try {
+          token = await getToken({ template: 'default' });
+          if (token) {
+            data = await api.toggleStock(productId, token);
+          }
+        } catch (refreshErr) {
+          console.warn('Token refresh failed:', refreshErr);
+        }
+      }
+      
+      if (data && data.status === 401) {
+        toast.error('Session expired. Please sign in again.');
+        return;
+      }
+      
       if (data.success) {
         toast.success(`Product ${data.product.inStock ? 'in' : 'out of'} stock`)
         fetchProducts()
@@ -19,11 +37,30 @@ const ListProduct = () => {
       toast.error(error.message || "Failed to toggle stock")
     }
   }
+  
   const handleDelete = async (productId) => {
     if (!confirm('Delete this product?')) return;
     try {
-      const token = await getToken();
-      const data = await api.deleteProduct(productId, token);
+      let token = await getToken();
+      let data = await api.deleteProduct(productId, token);
+      
+      // If unauthorized, try to refresh token
+      if (data && data.status === 401) {
+        try {
+          token = await getToken({ template: 'default' });
+          if (token) {
+            data = await api.deleteProduct(productId, token);
+          }
+        } catch (refreshErr) {
+          console.warn('Token refresh failed:', refreshErr);
+        }
+      }
+      
+      if (data && data.status === 401) {
+        toast.error('Session expired. Please sign in again.');
+        return;
+      }
+      
       if (data.success) {
         toast.success('Product deleted');
         fetchProducts();

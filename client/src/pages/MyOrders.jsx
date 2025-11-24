@@ -13,8 +13,26 @@ const MyOrders = () => {
     if (!user) return;
     setLoading(true);
     try {
-      const token = await getToken();
-      const data = await api.getUserOrders(token);
+      let token = await getToken();
+      let data = await api.getUserOrders(token);
+      
+      // If unauthorized, try to refresh token
+      if (data && data.status === 401) {
+        try {
+          token = await getToken({ template: 'default' });
+          if (token) {
+            data = await api.getUserOrders(token);
+          }
+        } catch (refreshErr) {
+          console.warn('Token refresh failed:', refreshErr);
+        }
+      }
+      
+      if (data && data.status === 401) {
+        toast.error('Session expired. Please sign in again.');
+        return;
+      }
+      
       if (data.success) {
         setOrders(data.orders || []);
       }

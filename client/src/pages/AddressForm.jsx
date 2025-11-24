@@ -39,17 +39,83 @@ const AddressForm = () => {
       return
     }
 
+    // If user not signed in or auth unavailable, save address locally
+    if (!user) {
+      try {
+        const raw = localStorage.getItem('plp_addresses');
+        const arr = raw ? JSON.parse(raw) : [];
+        arr.push({ ...address, id: `local_${Date.now()}`, createdAt: new Date().toISOString() });
+        localStorage.setItem('plp_addresses', JSON.stringify(arr));
+        toast.success('Address saved locally. Sign in to sync it to your account.');
+        navigate('/cart');
+        return;
+      } catch (err) {
+        // fallback to prompting sign-in
+        toast.error('Please sign in to save an address');
+        navigate('/sign-in');
+        return;
+      }
+    }
+
     setLoading(true)
     try {
-      const token = await getToken()
-      const data = await api.addAddress(address, token)
-      if (data.success) {
-        toast.success("Address added successfully!")
-        loadAddresses()
-        navigate('/cart')
+      let token = await getToken()
+      let data = await api.addAddress(address, token)
+
+      // If unauthorized, try to refresh token and retry once
+      if (data && data.status === 401 && token) {
+        try {
+          // Force token refresh
+          const refreshed = await getToken({ template: 'default' })
+          if (refreshed && refreshed !== token) {
+            token = refreshed
+            data = await api.addAddress(address, token)
+          }
+        } catch (refreshErr) {
+          console.warn('Token refresh failed:', refreshErr);
+          // Continue to error handling
+        }
       }
+
+      // If server reports user not found, try syncing user then retry once
+      if (data && data.message && /user not found/i.test(data.message)) {
+        try {
+          await api.getUser(token)
+          data = await api.addAddress(address, token)
+        } catch (err) {
+          // ignore, will be handled below
+        }
+      }
+
+      if (data && data.success) {
+        toast.success("Address added successfully!")
+        // reload addresses from server
+        await loadAddresses()
+        navigate('/cart')
+        return
+      }
+
+      // Handle persistent unauthorized: save locally as fallback
+      if (data && data.status === 401) {
+        try {
+          const raw = localStorage.getItem('plp_addresses');
+          const arr = raw ? JSON.parse(raw) : [];
+          arr.push({ ...address, id: `local_${Date.now()}`, createdAt: new Date().toISOString() });
+          localStorage.setItem('plp_addresses', JSON.stringify(arr));
+          toast.success('Address saved locally. Sign in to sync it to your account.');
+          navigate('/cart');
+          return;
+        } catch (err) {
+          toast.error('Session expired — please sign in again');
+          navigate('/sign-in');
+          return;
+        }
+      }
+
+      // Other failures
+      toast.error((data && (data.message || data.error)) || "Failed to add address")
     } catch (error) {
-      toast.error(error.message || "Failed to add address")
+      toast.error(error?.message || "Failed to add address")
     } finally {
       setLoading(false)
     }

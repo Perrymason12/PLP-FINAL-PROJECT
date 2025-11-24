@@ -7,24 +7,56 @@ const Testimonial = () => {
       name: "Briar Martin",
       handle: "@neilstellar",
       date: "April 20, 2025",
+      message: "The rental process was incredibly smooth! Found the perfect tractor for my farm in minutes and the checkout was hassle-free. Highly recommend!"
     },
     {
       image: assets.user2,
       name: "Avery Johnson",
       handle: "@averywrites",
       date: "May 10, 2025",
+      message: "Amazing selection of agricultural equipment! The product details are clear, and I love how easy it is to compare different sizes and prices. Great service!"
     },
     {
       image: assets.user3,
       name: "Jordan Lee",
       handle: "@jordantalks",
       date: "June 5, 2025",
+      message: "Fast delivery and excellent customer support! The equipment arrived in perfect condition. The secure payment options made me feel confident throughout."
     },
     {
       image: assets.user4,
-      name: "Avery Johnson",
-      handle: "@averywrites",
-      date: "May 10, 2025",
+      name: "Sarah Chen",
+      handle: "@sarahfarms",
+      date: "May 28, 2025",
+      message: "Love the user-friendly interface! Managing my orders and tracking deliveries is so simple. The address management feature saved me so much time."
+    },
+    {
+      image: assets.user1,
+      name: "Michael Torres",
+      handle: "@mikefarms",
+      date: "June 15, 2025",
+      message: "The search and filter features are fantastic! I can easily find exactly what I need by category, type, and price. Saved me hours of browsing!"
+    },
+    {
+      image: assets.user2,
+      name: "Emma Williams",
+      handle: "@emmaworks",
+      date: "May 22, 2025",
+      message: "Cash on delivery option is a lifesaver! No need to worry about online payments. The equipment quality exceeded my expectations. Will rent again!"
+    },
+    {
+      image: assets.user3,
+      name: "David Park",
+      handle: "@davidgrows",
+      date: "June 8, 2025",
+      message: "The cart system works perfectly! I can add multiple items, adjust quantities, and checkout seamlessly. The order confirmation emails are very helpful."
+    },
+    {
+      image: assets.user4,
+      name: "Lisa Anderson",
+      handle: "@lisafarm",
+      date: "May 30, 2025",
+      message: "Best agricultural rental platform I've used! The product images are high quality, descriptions are detailed, and the mobile layout is perfect for browsing on the go."
     },
   ];
 
@@ -45,7 +77,7 @@ const Testimonial = () => {
         </div>
       </div>
       <p className="text-sm py-4 text-gray-800">
-        Radiant made undercutting all of our competitors an absolute breeze.
+        {card.message}
       </p>
       <div className="flex items-center justify-between text-slate-500 text-xs">
         <div className="flex items-center gap-1">

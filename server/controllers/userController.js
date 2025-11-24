@@ -6,33 +6,89 @@ export const getUser = async (req, res) => {
   try {
     const { userId } = req;
     
-    // Get user from Clerk
-    const clerk = clerkClient();
-    const clerkUser = await clerk.users.getUser(userId);
+    if (!userId) {
+      return res.status(400).json({ message: 'User ID is required' });
+    }
     
-    // Check if user exists in database
+    console.log('Get user request for userId:', userId);
+    
+    // Check if user exists in database first
     let user = await User.findOne({ clerkId: userId });
+    
+    // Try to get user from Clerk to sync/update info
+    let clerkUser = null;
+    try {
+      // Check if CLERK_SECRET_KEY is set
+      if (!process.env.CLERK_SECRET_KEY) {
+        console.warn('CLERK_SECRET_KEY is not set, skipping Clerk sync');
+      } else {
+        const clerk = clerkClient();
+        if (clerk) {
+          console.log('Fetching user from Clerk API...');
+          clerkUser = await clerk.users.getUser(userId);
+          console.log('Clerk user fetched successfully');
+        }
+      }
+    } catch (clerkError) {
+      console.warn('Failed to fetch user from Clerk:', clerkError?.message || clerkError);
+      // Continue without Clerk data if user already exists in database
+      if (!user) {
+        // If user doesn't exist and we can't get Clerk data, return error
+        return res.status(500).json({ 
+          message: 'Failed to fetch user from Clerk and user not found in database', 
+          error: clerkError?.message || 'Clerk API error'
+        });
+      }
+      // If user exists, continue with existing data
+      console.log('Using existing user data from database');
+    }
     
     if (!user) {
       // Create new user
-      user = await User.create({
-        clerkId: userId,
-        email: clerkUser.emailAddresses[0]?.emailAddress || '',
-        firstName: clerkUser.firstName || '',
-        lastName: clerkUser.lastName || '',
-        imageUrl: clerkUser.imageUrl || '',
-        role: clerkUser.publicMetadata?.role || 'user',
-        isOwner: clerkUser.publicMetadata?.isOwner || false
-      });
+      if (!clerkUser) {
+        return res.status(500).json({ 
+          message: 'Cannot create user: Clerk data unavailable',
+          error: 'Failed to fetch user from Clerk API'
+        });
+      }
+      
+      try {
+        user = await User.create({
+          clerkId: userId,
+          email: clerkUser.emailAddresses?.[0]?.emailAddress || '',
+          firstName: clerkUser.firstName || '',
+          lastName: clerkUser.lastName || '',
+          imageUrl: clerkUser.imageUrl || '',
+          role: clerkUser.publicMetadata?.role || 'user',
+          isOwner: clerkUser.publicMetadata?.isOwner || false
+        });
+        console.log('New user created in database:', user._id);
+      } catch (createError) {
+        console.error('Error creating user:', createError);
+        // If duplicate key error, try to find the user again
+        if (createError.code === 11000) {
+          user = await User.findOne({ clerkId: userId });
+          if (user) {
+            console.log('User found after duplicate key error');
+          } else {
+            throw createError;
+          }
+        } else {
+          throw createError;
+        }
+      }
     } else {
-      // Update user info from Clerk
-      user.email = clerkUser.emailAddresses[0]?.emailAddress || user.email;
-      user.firstName = clerkUser.firstName || user.firstName;
-      user.lastName = clerkUser.lastName || user.lastName;
-      user.imageUrl = clerkUser.imageUrl || user.imageUrl;
-      user.role = clerkUser.publicMetadata?.role || user.role;
-      user.isOwner = clerkUser.publicMetadata?.isOwner || user.isOwner;
-      await user.save();
+      // Update user info from Clerk if available
+      if (clerkUser) {
+        user.email = clerkUser.emailAddresses?.[0]?.emailAddress || user.email;
+        user.firstName = clerkUser.firstName || user.firstName;
+        user.lastName = clerkUser.lastName || user.lastName;
+        user.imageUrl = clerkUser.imageUrl || user.imageUrl;
+        user.role = clerkUser.publicMetadata?.role || user.role;
+        user.isOwner = clerkUser.publicMetadata?.isOwner || user.isOwner;
+        await user.save();
+        console.log('User updated from Clerk data');
+      }
     }
     
     res.json({
@@ -50,7 +106,12 @@ export const getUser = async (req, res) => {
     });
   } catch (error) {
     console.error('Get user error:', error);
-    res.status(500).json({ message: 'Error fetching user', error: error.message });
+    console.error('Error stack:', error.stack);
+    res.status(500).json({ 
+      message: 'Error fetching user', 
+      error: error.message,
+      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
   }
 };
 

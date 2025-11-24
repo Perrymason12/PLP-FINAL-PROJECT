@@ -10,7 +10,9 @@ export const api = {
         Authorization: `Bearer ${token}`
       }
     });
-    return response.json();
+    const json = await response.json().catch(() => ({}));
+    json.status = response.status;
+    return json;
   },
 
   // Products
@@ -55,7 +57,9 @@ export const api = {
         Authorization: `Bearer ${token}`
       }
     });
-    return response.json();
+    const json = await response.json().catch(() => ({}));
+    json.status = response.status;
+    return json;
   },
   
   toggleStock: async (id, token) => {
@@ -66,7 +70,9 @@ export const api = {
         Authorization: `Bearer ${token}`
       }
     });
-    return response.json();
+    const json = await response.json().catch(() => ({}));
+    json.status = response.status;
+    return json;
   },
 
   // Bulk upload products (expects array of product objects without images or with image URLs)
@@ -79,7 +85,9 @@ export const api = {
       },
       body: JSON.stringify({ products })
     });
-    return response.json();
+    const json = await response.json().catch(() => ({}));
+    json.status = response.status;
+    return json;
   },
 
   // Cart
@@ -90,7 +98,9 @@ export const api = {
         Authorization: `Bearer ${token}`
       }
     });
-    return response.json();
+    const json = await response.json().catch(() => ({}));
+    json.status = response.status;
+    return json;
   },
   
   addToCart: async (productId, size, quantity, token) => {
@@ -129,7 +139,9 @@ export const api = {
         Authorization: `Bearer ${token}`
       }
     });
-    return response.json();
+    const json = await response.json().catch(() => ({}));
+    json.status = response.status;
+    return json;
   },
   
   clearCart: async (token) => {
@@ -140,7 +152,9 @@ export const api = {
         Authorization: `Bearer ${token}`
       }
     });
-    return response.json();
+    const json = await response.json().catch(() => ({}));
+    json.status = response.status;
+    return json;
   },
 
   // Address
@@ -148,10 +162,12 @@ export const api = {
     const response = await fetch(`${API_BASE_URL}/address`, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        ...(token && { Authorization: `Bearer ${token}` })
       }
     });
-    return response.json();
+    const json = await response.json().catch(() => ({}));
+    json.status = response.status;
+    return json;
   },
   
   addAddress: async (addressData, token) => {
@@ -159,11 +175,13 @@ export const api = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        ...(token && { Authorization: `Bearer ${token}` })
       },
       body: JSON.stringify(addressData)
     });
-    return response.json();
+    const json = await response.json().catch(() => ({}));
+    json.status = response.status;
+    return json;
   },
   
   updateAddress: async (id, addressData, token) => {
@@ -171,11 +189,13 @@ export const api = {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        ...(token && { Authorization: `Bearer ${token}` })
       },
       body: JSON.stringify(addressData)
     });
-    return response.json();
+    const json = await response.json().catch(() => ({}));
+    json.status = response.status;
+    return json;
   },
   
   deleteAddress: async (id, token) => {
@@ -183,10 +203,12 @@ export const api = {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        ...(token && { Authorization: `Bearer ${token}` })
       }
     });
-    return response.json();
+    const json = await response.json().catch(() => ({}));
+    json.status = response.status;
+    return json;
   },
 
   // Orders
@@ -199,7 +221,9 @@ export const api = {
       },
       body: JSON.stringify(orderData)
     });
-    return response.json();
+    const json = await response.json().catch(() => ({}));
+    json.status = response.status;
+    return json;
   },
   
   getUserOrders: async (token) => {
@@ -209,7 +233,9 @@ export const api = {
         Authorization: `Bearer ${token}`
       }
     });
-    return response.json();
+    const json = await response.json().catch(() => ({}));
+    json.status = response.status;
+    return json;
   },
   
   getOrderById: async (id, token) => {
@@ -219,7 +245,9 @@ export const api = {
         Authorization: `Bearer ${token}`
       }
     });
-    return response.json();
+    const json = await response.json().catch(() => ({}));
+    json.status = response.status;
+    return json;
   },
   
   getDashboardData: async (token) => {
@@ -229,7 +257,9 @@ export const api = {
         Authorization: `Bearer ${token}`
       }
     });
-    return response.json();
+    const json = await response.json().catch(() => ({}));
+    json.status = response.status;
+    return json;
   },
 
   // Payment
@@ -242,7 +272,9 @@ export const api = {
       },
       body: JSON.stringify({ addressId })
     });
-    return response.json();
+    const json = await response.json().catch(() => ({}));
+    json.status = response.status;
+    return json;
   },
   
   confirmPayment: async (paymentIntentId, token) => {
@@ -254,7 +286,58 @@ export const api = {
       },
       body: JSON.stringify({ paymentIntentId })
     });
-    return response.json();
+    const json = await response.json().catch(() => ({}));
+    json.status = response.status;
+    return json;
+  },
+
+  // Category Types
+  getCategoriesAndTypes: async () => {
+    const response = await fetch(`${API_BASE_URL}/category-types`);
+    const json = await response.json().catch(() => ({}));
+    json.status = response.status;
+    return json;
+  },
+
+  addCategoryType: async (data, token) => {
+    const response = await fetch(`${API_BASE_URL}/category-types`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(data)
+    });
+    const json = await response.json().catch(() => ({}));
+    json.status = response.status;
+    return json;
+  },
+
+  updateCategoryType: async (id, data, token) => {
+    const response = await fetch(`${API_BASE_URL}/category-types/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(data)
+    });
+    const json = await response.json().catch(() => ({}));
+    json.status = response.status;
+    return json;
+  },
+
+  deleteCategoryType: async (id, token) => {
+    const response = await fetch(`${API_BASE_URL}/category-types/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
+    });
+    const json = await response.json().catch(() => ({}));
+    json.status = response.status;
+    return json;
   }
 };
 

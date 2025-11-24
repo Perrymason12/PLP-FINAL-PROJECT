@@ -17,8 +17,26 @@ const Dashboard = () => {
   const getDashboardData = async () => {
     if (!user) return;
     try {
-      const token = await getToken();
-      const data = await api.getDashboardData(token);
+      let token = await getToken();
+      let data = await api.getDashboardData(token);
+      
+      // If unauthorized, try to refresh token
+      if (data && data.status === 401) {
+        try {
+          token = await getToken({ template: 'default' });
+          if (token) {
+            data = await api.getDashboardData(token);
+          }
+        } catch (refreshErr) {
+          console.warn('Token refresh failed:', refreshErr);
+        }
+      }
+      
+      if (data && data.status === 401) {
+        toast.error('Session expired. Please sign in again.');
+        return;
+      }
+      
       if (data.success) {
         setDashboardData({
           orders: data.dashboard.orders || [],

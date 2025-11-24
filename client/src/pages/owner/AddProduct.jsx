@@ -65,7 +65,7 @@ const AddProduct = () => {
 
     setLoading(true);
     try {
-      const token = await getToken();
+      let token = await getToken();
       const formData = new FormData();
       formData.append('title', inputs.title);
       formData.append('description', inputs.description);
@@ -81,7 +81,39 @@ const AddProduct = () => {
         }
       });
 
-      const data = await api.addProduct(formData, token);
+      let data = await api.addProduct(formData, token);
+      
+      // If unauthorized, try to refresh token and retry
+      if (data && data.status === 401) {
+        try {
+          token = await getToken({ template: 'default' });
+          if (token) {
+            // Recreate formData with new token
+            const newFormData = new FormData();
+            newFormData.append('title', inputs.title);
+            newFormData.append('description', inputs.description);
+            newFormData.append('category', inputs.category);
+            newFormData.append('type', inputs.type);
+            newFormData.append('popular', inputs.popular);
+            newFormData.append('sizes', JSON.stringify(sizePrices.map(sp => sp.size)));
+            newFormData.append('prices', JSON.stringify(sizePrices.map(sp => sp.price)));
+            Object.keys(images).forEach(key => {
+              if (images[key]) {
+                newFormData.append('images', images[key]);
+              }
+            });
+            data = await api.addProduct(newFormData, token);
+          }
+        } catch (refreshErr) {
+          console.warn('Token refresh failed:', refreshErr);
+        }
+      }
+      
+      if (data && data.status === 401) {
+        toast.error('Session expired. Please sign in again.');
+        return;
+      }
+      
       if (data.success) {
         toast.success("Product added successfully!");
         // Reset form
@@ -89,6 +121,8 @@ const AddProduct = () => {
         setSizePrices([]);
         setImages({ 1: null, 2: null, 3: null, 4: null });
         fetchProducts();
+      } else {
+        toast.error(data.message || "Failed to add product");
       }
     } catch (error) {
       toast.error(error.message || "Failed to add product");

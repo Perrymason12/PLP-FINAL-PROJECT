@@ -6,6 +6,7 @@ import RelatedProducts from "../components/RelatedProducts";
 import { useAppContext } from "../context/AppContext";
 import { assets } from "../assets/data";
 import Item from "../components/Item";
+import toast from "react-hot-toast";
 
 const ProductDetails = () => {
   const { products, currency, addToCart } = useAppContext();
@@ -19,8 +20,12 @@ const ProductDetails = () => {
 
   useEffect(() => {
     if (product) {
-      setImage(product.images[0]);
-      setSize(product.sizes[0]);
+      setImage(product.images && product.images.length > 0 ? product.images[0] : null);
+      if (product.sizes && product.sizes.length > 0) {
+        setSize(product.sizes[0]);
+      } else {
+        setSize(null);
+      }
     }
   }, [product]);
   return (
@@ -61,28 +66,45 @@ const ProductDetails = () => {
               <div className="h4 flex items-baseline gap-4 my-2">
                 <h3 className="h3 text-secondary">
                   {currency}
-                  {product.price[size]}.00
+                  {(() => {
+                    if (!size) return '0';
+                    if (product.price instanceof Map) {
+                      return product.price.get(size) || '0';
+                    }
+                    return product.price[size] || '0';
+                  })()}.00
                 </h3>
               </div>
               <p className="max-w-[555px] mb-3 text-gray-700">{product.description}</p>
               <div className="flex flex-col gap-4 my-4 mb-5">
-                <div className="flex gap-2 flex-wrap">
-                  {[...product.sizes].map((item, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setSize(item)}
-                      className={`medium-14 h-8 w-16 ring-1 ring-slate-900/10 rounded-lg transition-all duration-200 ${item === size ? "bg-primary-dark text-secondary" : "bg-white text-gray-700 hover:bg-primary-dark hover:text-secondary"}`}
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
+                {product.sizes && product.sizes.length > 0 ? (
+                  <div className="flex gap-2 flex-wrap">
+                    {[...product.sizes].map((item, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setSize(item)}
+                        className={`medium-14 h-8 w-16 ring-1 ring-slate-900/10 rounded-lg transition-all duration-200 ${item === size ? "bg-primary-dark text-secondary" : "bg-white text-gray-700 hover:bg-primary-dark hover:text-secondary"}`}
+                      >
+                        {item}
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-gray-500 text-sm">No sizes available</p>
+                )}
               </div>
               <div className="flex gap-3 mb-4">
                 <button
-                  onClick={() => addToCart(product._id, size || product.sizes[0], 1)}
-                  disabled={!size}
-                  className={`btn-dark  flexCenter gap-x-2 capitalize w-1/2 ${!size ? 'opacity-60 cursor-not-allowed' : ''}`}
+                  onClick={() => {
+                    const selectedSize = size || (product.sizes && product.sizes.length > 0 ? product.sizes[0] : null);
+                    if (selectedSize) {
+                      addToCart(product._id, selectedSize, 1);
+                    } else {
+                      toast.error('Please select a size first');
+                    }
+                  }}
+                  disabled={!size && (!product.sizes || product.sizes.length === 0)}
+                  className={`btn-dark  flexCenter gap-x-2 capitalize w-1/2 ${(!size && (!product.sizes || product.sizes.length === 0)) ? 'opacity-60 cursor-not-allowed' : ''}`}
                 >
                   Add to Cart
                   <img src={assets.cartAdd} alt="" width={19}/>

@@ -9,15 +9,20 @@ const Cart = () => {
   const [cartData , setCartData] = useState([])
 
   useEffect(() => {
-    if(products.length > 0 ){
+    if(products.length > 0 && cartItems){
       const tempData = []
       for(const itemId in cartItems){
-        for(const size in cartItems[itemId]){
-          if(cartItems[itemId][size] > 0){
-            tempData.push({
-              _id: itemId,
-              size: size,
-            })
+        // Safety check: ensure cartItems[itemId] is an object
+        if(cartItems[itemId] && typeof cartItems[itemId] === 'object'){
+          for(const size in cartItems[itemId]){
+            // Safety check: ensure quantity is a valid number
+            const quantity = cartItems[itemId][size];
+            if(quantity && quantity > 0){
+              tempData.push({
+                _id: itemId,
+                size: size,
+              })
+            }
           }
         }
       }
@@ -26,11 +31,19 @@ const Cart = () => {
   }, [products, cartItems])
 
   const increment = (id, size)=>{
+    if (!cartItems[id] || !cartItems[id][size]) {
+      console.warn('Cannot increment: item not found in cart');
+      return;
+    }
     const currentQuantity = cartItems[id][size]
     updateQuantity(id, size , currentQuantity + 1)
   }
 
   const decrement = (id, size)=>{
+    if (!cartItems[id] || !cartItems[id][size]) {
+      console.warn('Cannot decrement: item not found in cart');
+      return;
+    }
     const currentQuantity = cartItems[id][size]
     if (currentQuantity > 1) {
       updateQuantity(id, size , currentQuantity - 1)
@@ -59,13 +72,32 @@ const Cart = () => {
           {cartData.map((item , i)=>{
             const product = products.find((p)=>p._id === item._id)
             if (!product) return null;
+            
+            // Safety check: ensure cartItems[item._id] exists before accessing size
+            if (!cartItems[item._id] || !cartItems[item._id][item.size]) {
+              return null;
+            }
+            
             const quantity = cartItems[item._id][item.size]
             const price = getPrice(product, item.size);
+            
+            // Safety check: ensure price exists
+            if (!price) {
+              console.warn(`Price not found for product ${item._id} size ${item.size}`);
+              return null;
+            }
+            
+            // Safety check: ensure product has images
+            if (!product.images || !product.images.length) {
+              console.warn(`No images found for product ${item._id}`);
+              return null;
+            }
+            
             return (
               <div key={i} className='grid grid-cols-1 sm:grid-cols-[6fr_2fr_1fr] items-center bg-white p-3 sm:p-2 rounded-xl gap-3'>
                 <div className='flex items-center gap-3 sm:gap-6'>
                   <div className='flex bg-primary rounded-xl flex-shrink-()'>
-                    <img src={product.images[0]} alt="" className='w-16 h-16 sm:w-20 sm:h-20 object-cover'/>
+                    <img src={product.images[0]} alt={product.title || 'Product'} className='w-16 h-16 sm:w-20 sm:h-20 object-cover'/>
                   </div>
                   <div className='flex-1 min-w-0'>
                     <h5 className='h5 line-clamp-2 sm:line-clamp-1'>{product.title}</h5>

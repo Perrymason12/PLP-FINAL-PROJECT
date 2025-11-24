@@ -31,6 +31,7 @@ const CartTotal = () => {
   // paymentIntent id is not needed client-side for display; keep clientSecret only
   const [clientSecret, setClientSecret] = useState(null)
   const [processing, setProcessing] = useState(false)
+  // Note: paymentIntent ID is retrieved from paymentIntentResult.id in handleStripePaymentSuccess
 
   useEffect(() => {
     if (user && addresses.length > 0) {
@@ -50,10 +51,30 @@ const CartTotal = () => {
     const createPaymentIntent = async () => {
       if (method === 'stripe' && selectedAddress && user && !clientSecret) {
         try {
-          const token = await getToken()
-          const paymentData = await api.createPaymentIntent(selectedAddress._id, token)
+          let token = await getToken()
+          let paymentData = await api.createPaymentIntent(selectedAddress._id, token)
+          
+          // If unauthorized, try to refresh token
+          if (paymentData && paymentData.status === 401) {
+            try {
+              token = await getToken({ template: 'default' })
+              if (token) {
+                paymentData = await api.createPaymentIntent(selectedAddress._id, token)
+              }
+            } catch (refreshErr) {
+              console.warn('Token refresh failed:', refreshErr)
+            }
+          }
+          
+          if (paymentData && paymentData.status === 401) {
+            toast.error('Session expired. Please sign in again.')
+            setMethod('COD')
+            return
+          }
+          
           if (paymentData.success) {
             setClientSecret(paymentData.clientSecret)
+            // paymentIntent ID will be retrieved from paymentIntentResult.id after payment
           }
         } catch (error) {
           console.error('Error creating payment intent:', error)
@@ -70,16 +91,40 @@ const CartTotal = () => {
 
   const handleStripePaymentSuccess = async (paymentIntentResult) => {
     try {
-      const token = await getToken()
-      const orderData = await api.createOrder({
+      let token = await getToken()
+      let orderData = await api.createOrder({
         addressId: selectedAddress._id,
         paymentMethod: 'stripe',
         paymentIntentId: paymentIntentResult.id
       }, token)
 
+      // If unauthorized, try to refresh token
+      if (orderData && orderData.status === 401) {
+        try {
+          token = await getToken({ template: 'default' })
+          if (token) {
+            orderData = await api.createOrder({
+              addressId: selectedAddress._id,
+              paymentMethod: 'stripe',
+              paymentIntentId: paymentIntentResult.id
+            }, token)
+          }
+        } catch (refreshErr) {
+          console.warn('Token refresh failed:', refreshErr)
+        }
+      }
+
+      if (orderData && orderData.status === 401) {
+        toast.error('Session expired. Please sign in again.')
+        navigate('/sign-in')
+        return
+      }
+
       if (orderData.success) {
         toast.success("Order placed successfully!")
         navigate('/my-orders')
+      } else {
+        toast.error(orderData.message || "Failed to create order")
       }
     } catch (error) {
       toast.error(error.message || "Failed to create order")
@@ -110,15 +155,38 @@ const CartTotal = () => {
     if (method === 'COD') {
       setLoading(true)
       try {
-        const token = await getToken()
-        const orderData = await api.createOrder({
+        let token = await getToken()
+        let orderData = await api.createOrder({
           addressId: selectedAddress._id,
           paymentMethod: 'COD'
         }, token)
 
+        // If unauthorized, try to refresh token
+        if (orderData && orderData.status === 401) {
+          try {
+            token = await getToken({ template: 'default' })
+            if (token) {
+              orderData = await api.createOrder({
+                addressId: selectedAddress._id,
+                paymentMethod: 'COD'
+              }, token)
+            }
+          } catch (refreshErr) {
+            console.warn('Token refresh failed:', refreshErr)
+          }
+        }
+
+        if (orderData && orderData.status === 401) {
+          toast.error('Session expired. Please sign in again.')
+          navigate('/sign-in')
+          return
+        }
+
         if (orderData.success) {
           toast.success("Order placed successfully!")
           navigate('/my-orders')
+        } else {
+          toast.error(orderData.message || "Failed to place order")
         }
       } catch (error) {
         toast.error(error.message || "Failed to place order")

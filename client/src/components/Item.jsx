@@ -30,7 +30,7 @@ const Item = ({ product }) => {
           height={144}
           width={144}
         />
-        <div className="absolute bottom-1 left-1 right-1 hidden group-hover:block">
+        <div className="absolute bottom-1 left-1 right-1 block md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
           <button
             onClick={() => {
               navigate(`/collection/${product._id} `);
@@ -53,7 +53,7 @@ const Item = ({ product }) => {
           <h5 className="h5 uppercase line-clamp-1">{product.title}</h5>
           <p className="uppercase font-semibold">
             {currency}
-            {product.price[size]}.00
+            {product.price[size]}
           </p>
         </div>
         <p className="line-clamp-2 pt-1">{product.description}</p>
