@@ -23,6 +23,10 @@ const AddProduct = () => {
   const [newSize, setNewSize] = useState("");
   const [newPrice, setNewPrice] = useState("");
   const [loading, setLoading] = useState(false);
+  const [newCategory, setNewCategory] = useState("");
+  const [newType, setNewType] = useState("");
+  const [useNewCategory, setUseNewCategory] = useState(false);
+  const [useNewType, setUseNewType] = useState(false);
 
   const { products = [], getToken, fetchProducts } = useAppContext();
   const allCategories = Array.from(new Set(products.map((p) => p?.category).filter(Boolean)));
@@ -50,8 +54,22 @@ const AddProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!inputs.title || !inputs.description || !inputs.category || !inputs.type) {
+    // Determine final category and type values
+    const finalCategory = useNewCategory ? newCategory.trim() : inputs.category;
+    const finalType = useNewType ? newType.trim() : inputs.type;
+    
+    if (!inputs.title || !inputs.description || !finalCategory || !finalType) {
       toast.error("Please fill all required fields");
+      return;
+    }
+    
+    if (useNewCategory && !newCategory.trim()) {
+      toast.error("Please enter a category name");
+      return;
+    }
+    
+    if (useNewType && !newType.trim()) {
+      toast.error("Please enter a type name");
       return;
     }
     if (sizePrices.length === 0) {
@@ -69,8 +87,8 @@ const AddProduct = () => {
       const formData = new FormData();
       formData.append('title', inputs.title);
       formData.append('description', inputs.description);
-      formData.append('category', inputs.category);
-      formData.append('type', inputs.type);
+      formData.append('category', finalCategory);
+      formData.append('type', finalType);
       formData.append('popular', inputs.popular);
       formData.append('sizes', JSON.stringify(sizePrices.map(sp => sp.size)));
       formData.append('prices', JSON.stringify(sizePrices.map(sp => sp.price)));
@@ -92,8 +110,8 @@ const AddProduct = () => {
             const newFormData = new FormData();
             newFormData.append('title', inputs.title);
             newFormData.append('description', inputs.description);
-            newFormData.append('category', inputs.category);
-            newFormData.append('type', inputs.type);
+            newFormData.append('category', finalCategory);
+            newFormData.append('type', finalType);
             newFormData.append('popular', inputs.popular);
             newFormData.append('sizes', JSON.stringify(sizePrices.map(sp => sp.size)));
             newFormData.append('prices', JSON.stringify(sizePrices.map(sp => sp.price)));
@@ -120,6 +138,10 @@ const AddProduct = () => {
         setInputs({ title: "", description: "", category: "", type: "", popular: false });
         setSizePrices([]);
         setImages({ 1: null, 2: null, 3: null, 4: null });
+        setNewCategory("");
+        setNewType("");
+        setUseNewCategory(false);
+        setUseNewType(false);
         fetchProducts();
       } else {
         toast.error(data.message || "Failed to add product");
@@ -158,32 +180,86 @@ const AddProduct = () => {
         </div>
         <div className="flex gap-4 flex-wrap">
             <div className="flex-1 min-w-[200px]">
-              <h5 className="h5">Category</h5>
-              <select 
-                value={inputs.category}
-                onChange={(e) => setInputs({...inputs, category: e.target.value})}
-                className="px-3 py-1.5 ring-1 ring-slate-900/10 rounded-lg bg-white text-gray-600 medium-14 mt-1 w-full"
-                required
-              >
-              <option value="">Select Category</option>
-              {allCategories.map((cat, index)=>(
-                <option key={index} value={cat}>{cat}</option>
-              ))}
-              </select>
+              <div className="flex items-center justify-between mb-1">
+                <h5 className="h5">Category</h5>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUseNewCategory(!useNewCategory);
+                    if (!useNewCategory) {
+                      setInputs({...inputs, category: ""});
+                    } else {
+                      setNewCategory("");
+                    }
+                  }}
+                  className="text-xs text-blue-600 hover:text-blue-800 underline"
+                >
+                  {useNewCategory ? "Use Existing" : "Add New"}
+                </button>
+              </div>
+              {useNewCategory ? (
+                <input
+                  type="text"
+                  placeholder="Enter new category..."
+                  value={newCategory}
+                  onChange={(e) => setNewCategory(e.target.value)}
+                  className="px-3 py-1.5 ring-1 ring-slate-900/10 rounded-lg bg-white text-gray-600 medium-14 mt-1 w-full"
+                  required
+                />
+              ) : (
+                <select 
+                  value={inputs.category}
+                  onChange={(e) => setInputs({...inputs, category: e.target.value})}
+                  className="px-3 py-1.5 ring-1 ring-slate-900/10 rounded-lg bg-white text-gray-600 medium-14 mt-1 w-full"
+                  required
+                >
+                  <option value="">Select Category</option>
+                  {allCategories.map((cat, index)=>(
+                    <option key={index} value={cat}>{cat}</option>
+                  ))}
+                </select>
+              )}
             </div>
             <div className="flex-1 min-w-[200px]">
-              <h5 className="h5">Types</h5>
-              <select 
-                value={inputs.type}
-                onChange={(e) => setInputs({...inputs, type: e.target.value})}
-                className="px-3 py-1.5 ring-1 ring-slate-900/10 rounded-lg bg-white text-gray-600 medium-14 mt-1 w-full"
-                required
-              >
-              <option value="">Select Type</option>
-              {allTypes.map((t, index)=>(
-                <option key={index} value={t}>{t}</option>
-              ))}
-              </select>
+              <div className="flex items-center justify-between mb-1">
+                <h5 className="h5">Type</h5>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUseNewType(!useNewType);
+                    if (!useNewType) {
+                      setInputs({...inputs, type: ""});
+                    } else {
+                      setNewType("");
+                    }
+                  }}
+                  className="text-xs text-blue-600 hover:text-blue-800 underline"
+                >
+                  {useNewType ? "Use Existing" : "Add New"}
+                </button>
+              </div>
+              {useNewType ? (
+                <input
+                  type="text"
+                  placeholder="Enter new type..."
+                  value={newType}
+                  onChange={(e) => setNewType(e.target.value)}
+                  className="px-3 py-1.5 ring-1 ring-slate-900/10 rounded-lg bg-white text-gray-600 medium-14 mt-1 w-full"
+                  required
+                />
+              ) : (
+                <select 
+                  value={inputs.type}
+                  onChange={(e) => setInputs({...inputs, type: e.target.value})}
+                  className="px-3 py-1.5 ring-1 ring-slate-900/10 rounded-lg bg-white text-gray-600 medium-14 mt-1 w-full"
+                  required
+                >
+                  <option value="">Select Type</option>
+                  {allTypes.map((t, index)=>(
+                    <option key={index} value={t}>{t}</option>
+                  ))}
+                </select>
+              )}
             </div>
         </div>
         {/*Size and Price Pairs */}

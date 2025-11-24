@@ -25,11 +25,11 @@ const stripePromise = STRIPE_PUBLISHABLE_KEY ? loadStripe(STRIPE_PUBLISHABLE_KEY
 createRoot(document.getElementById("root")).render(
   <ClerkErrorBoundary publishableKey={CLERK_PUBLISHABLE_KEY || ''}>
     <Elements stripe={stripePromise}>
-      <BrowserRouter>
-        <AppContextProvider>
-          <App />
-        </AppContextProvider>
-      </BrowserRouter>
+    <BrowserRouter>
+      <AppContextProvider>
+        <App />
+      </AppContextProvider>
+    </BrowserRouter>
     </Elements>
   </ClerkErrorBoundary>
 );

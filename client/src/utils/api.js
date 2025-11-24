@@ -289,55 +289,6 @@ export const api = {
     const json = await response.json().catch(() => ({}));
     json.status = response.status;
     return json;
-  },
-
-  // Category Types
-  getCategoriesAndTypes: async () => {
-    const response = await fetch(`${API_BASE_URL}/category-types`);
-    const json = await response.json().catch(() => ({}));
-    json.status = response.status;
-    return json;
-  },
-
-  addCategoryType: async (data, token) => {
-    const response = await fetch(`${API_BASE_URL}/category-types`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify(data)
-    });
-    const json = await response.json().catch(() => ({}));
-    json.status = response.status;
-    return json;
-  },
-
-  updateCategoryType: async (id, data, token) => {
-    const response = await fetch(`${API_BASE_URL}/category-types/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify(data)
-    });
-    const json = await response.json().catch(() => ({}));
-    json.status = response.status;
-    return json;
-  },
-
-  deleteCategoryType: async (id, token) => {
-    const response = await fetch(`${API_BASE_URL}/category-types/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      }
-    });
-    const json = await response.json().catch(() => ({}));
-    json.status = response.status;
-    return json;
   }
 };
 

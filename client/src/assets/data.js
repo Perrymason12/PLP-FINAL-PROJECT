@@ -924,6 +924,28 @@ export const blogs = [
     image: blog1,
     description:
       "Discover how drones, sensors, and AI are revolutionizing farming efficiency and productivity.",
+    author: "Dr. Sarah Mitchell",
+    date: "March 15, 2025",
+    readTime: "8 min read",
+    content: `
+      <p class="mb-4">Agriculture is experiencing a technological revolution that's reshaping how we grow, harvest, and manage crops. From precision farming to automated systems, technology is making agriculture more efficient, sustainable, and profitable.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">The Rise of Precision Agriculture</h2>
+      <p class="mb-4">Precision agriculture uses GPS, sensors, and data analytics to optimize field-level management. Farmers can now monitor soil conditions, crop health, and weather patterns in real-time, allowing for targeted interventions that reduce waste and increase yields.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Drones and Aerial Monitoring</h2>
+      <p class="mb-4">Agricultural drones equipped with multispectral cameras can detect crop stress, disease outbreaks, and irrigation issues before they become visible to the naked eye. This early detection saves farmers time and money while protecting their harvests.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">AI and Machine Learning</h2>
+      <p class="mb-4">Artificial intelligence is helping farmers make data-driven decisions. Machine learning algorithms analyze historical data, weather patterns, and crop performance to predict optimal planting times, fertilizer needs, and harvest windows.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">IoT Sensors and Smart Farming</h2>
+      <p class="mb-4">Internet of Things (IoT) sensors placed throughout farms monitor soil moisture, temperature, humidity, and nutrient levels. This data is transmitted wirelessly to farmers' devices, enabling remote monitoring and automated irrigation systems.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">The Future of Farming</h2>
+      <p class="mb-4">As technology continues to evolve, we can expect even more innovations in vertical farming, robotic harvesting, and gene-edited crops. These advancements promise to address global food security challenges while reducing environmental impact.</p>
+    `,
+    tags: ["Technology", "Precision Farming", "AI", "Drones", "Innovation"]
   },
   {
     title: "The Secrets to Healthy Soil: Boosting Crop Yields Naturally",
@@ -931,6 +953,28 @@ export const blogs = [
     image: blog2,
     description:
       "Learn simple techniques to improve soil fertility using organic methods and sustainable practices.",
+    author: "Michael Chen",
+    date: "March 10, 2025",
+    readTime: "6 min read",
+    content: `
+      <p class="mb-4">Healthy soil is the foundation of successful farming. Rich, fertile soil not only produces better crops but also requires fewer chemical inputs, making it both economically and environmentally beneficial.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Understanding Soil Composition</h2>
+      <p class="mb-4">Soil is composed of minerals, organic matter, water, and air. The ideal soil contains approximately 45% minerals, 25% water, 25% air, and 5% organic matter. Understanding your soil's composition is the first step toward improvement.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Composting: Nature's Fertilizer</h2>
+      <p class="mb-4">Composting transforms organic waste into nutrient-rich humus that improves soil structure, water retention, and fertility. A well-maintained compost pile can provide all the nutrients your crops need while reducing waste.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Cover Crops and Crop Rotation</h2>
+      <p class="mb-4">Planting cover crops like legumes, clover, or rye between main crops helps prevent soil erosion, suppresses weeds, and adds nitrogen to the soil. Crop rotation breaks pest cycles and prevents nutrient depletion.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Natural Soil Amendments</h2>
+      <p class="mb-4">Organic amendments such as bone meal, rock phosphate, and kelp meal provide essential nutrients without the harmful effects of synthetic fertilizers. These natural sources release nutrients slowly, feeding plants over time.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Testing and Monitoring</h2>
+      <p class="mb-4">Regular soil testing helps you understand your soil's pH, nutrient levels, and organic matter content. This information guides your amendment strategy and ensures optimal growing conditions.</p>
+    `,
+    tags: ["Soil Health", "Organic Farming", "Composting", "Sustainability"]
   },
   {
     title: "Climate Change and Agriculture: Adapting for the Future",
@@ -938,6 +982,28 @@ export const blogs = [
     image: blog3,
     description:
       "Explore how farmers can adapt to changing weather patterns to ensure long-term food security.",
+    author: "Dr. Emily Rodriguez",
+    date: "March 5, 2025",
+    readTime: "10 min read",
+    content: `
+      <p class="mb-4">Climate change poses significant challenges to agriculture, but with the right strategies, farmers can adapt and even thrive in changing conditions. Understanding climate patterns and implementing resilient farming practices is crucial for future food security.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Understanding Climate Impacts</h2>
+      <p class="mb-4">Rising temperatures, changing precipitation patterns, and increased frequency of extreme weather events affect crop yields, water availability, and pest populations. Farmers must understand these impacts to develop effective adaptation strategies.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Drought-Resistant Crop Varieties</h2>
+      <p class="mb-4">Plant breeders are developing crop varieties that can withstand drought, heat, and other climate stresses. These resilient varieties help maintain yields even under adverse conditions.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Water Management Strategies</h2>
+      <p class="mb-4">Efficient water management is critical in a changing climate. Techniques like drip irrigation, rainwater harvesting, and soil moisture monitoring help farmers use water more efficiently and prepare for dry periods.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Carbon Sequestration</h2>
+      <p class="mb-4">Farming practices that increase soil organic matter, such as no-till farming and cover cropping, can sequester carbon from the atmosphere, helping mitigate climate change while improving soil health.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Diversification and Risk Management</h2>
+      <p class="mb-4">Diversifying crops and income sources helps farmers spread risk and adapt to changing conditions. Mixed farming systems and agroforestry provide multiple benefits and increased resilience.</p>
+    `,
+    tags: ["Climate Change", "Sustainability", "Adaptation", "Resilience"]
   },
   {
     title: "Top 5 Profitable Crops to Grow in 2025",
@@ -945,6 +1011,31 @@ export const blogs = [
     image: blog4,
     description:
       "A guide to the most lucrative crops for small and medium-scale farmers this year.",
+    author: "James Thompson",
+    date: "February 28, 2025",
+    readTime: "7 min read",
+    content: `
+      <p class="mb-4">Choosing the right crops can make the difference between a struggling farm and a profitable operation. Here are the top five most profitable crops for 2025, based on market demand, profit margins, and growing conditions.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">1. Specialty Herbs and Microgreens</h2>
+      <p class="mb-4">High-end restaurants and health-conscious consumers are driving demand for specialty herbs and microgreens. These crops have high profit margins, quick turnaround times, and can be grown in small spaces or greenhouses year-round.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">2. Organic Vegetables</h2>
+      <p class="mb-4">The organic food market continues to grow, with consumers willing to pay premium prices for organic produce. Tomatoes, peppers, and leafy greens are particularly profitable when grown organically and sold directly to consumers or restaurants.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">3. Hemp and CBD Products</h2>
+      <p class="mb-4">With the legalization of hemp farming, CBD products have become a lucrative market. Hemp requires less water than many crops and has multiple uses, from fiber to CBD oil extraction.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">4. Mushrooms</h2>
+      <p class="mb-4">Gourmet mushrooms like shiitake, oyster, and lion's mane command high prices in specialty markets. They can be grown indoors year-round, making them ideal for small-scale operations.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">5. Berries</h2>
+      <p class="mb-4">Strawberries, blueberries, and raspberries are consistently profitable crops. They can be sold fresh, frozen, or processed, providing multiple revenue streams. U-pick operations also add value and reduce labor costs.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Market Research is Key</h2>
+      <p class="mb-4">Before planting, research local market demand, competition, and pricing. Consider direct-to-consumer sales through farmers markets, CSAs, or online platforms to maximize profits.</p>
+    `,
+    tags: ["Profitability", "Crop Selection", "Agribusiness", "Market Trends"]
   },
   {
     title: "Water-Smart Farming: Efficient Irrigation Techniques",
@@ -952,6 +1043,31 @@ export const blogs = [
     image: blog5,
     description:
       "Learn cost-effective irrigation methods that save water while maximizing yields.",
+    author: "Lisa Anderson",
+    date: "February 20, 2025",
+    readTime: "9 min read",
+    content: `
+      <p class="mb-4">Water is one of agriculture's most precious resources, and efficient irrigation is essential for sustainable farming. Modern irrigation techniques can reduce water usage by up to 50% while maintaining or even improving crop yields.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Drip Irrigation Systems</h2>
+      <p class="mb-4">Drip irrigation delivers water directly to plant roots through a network of tubes and emitters. This method reduces water waste from evaporation and runoff, making it one of the most efficient irrigation systems available.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Soil Moisture Monitoring</h2>
+      <p class="mb-4">Smart sensors placed in the soil measure moisture levels and transmit data to your smartphone or computer. This technology prevents overwatering and ensures plants receive water exactly when they need it.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Rainwater Harvesting</h2>
+      <p class="mb-4">Collecting and storing rainwater reduces dependence on municipal water or wells. Simple systems can capture thousands of gallons during rainy seasons, providing free irrigation water throughout the year.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Mulching and Soil Management</h2>
+      <p class="mb-4">Organic mulches like straw, wood chips, or compost help retain soil moisture, reducing irrigation needs by up to 30%. Healthy soil with good organic matter content also holds water more effectively.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Timing and Scheduling</h2>
+      <p class="mb-4">Watering during early morning hours reduces evaporation losses. Automated irrigation systems can be programmed to water at optimal times, ensuring consistent moisture levels without manual intervention.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Return on Investment</h2>
+      <p class="mb-4">While efficient irrigation systems require initial investment, they typically pay for themselves within 2-3 years through reduced water bills and improved crop yields. Many systems qualify for government grants or tax incentives.</p>
+    `,
+    tags: ["Irrigation", "Water Conservation", "Efficiency", "Sustainability"]
   },
   {
     title: "From Farm to Market: How to Sell Your Produce Online",
@@ -959,6 +1075,31 @@ export const blogs = [
     image: blog6,
     description:
       "Step-by-step tips for farmers to start selling their products digitally and reach more customers.",
+    author: "David Park",
+    date: "February 15, 2025",
+    readTime: "8 min read",
+    content: `
+      <p class="mb-4">The digital marketplace offers farmers unprecedented opportunities to reach customers directly, bypassing traditional supply chains and increasing profit margins. Here's how to get started selling your produce online.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Building Your Online Presence</h2>
+      <p class="mb-4">Start by creating a professional website or using established platforms like Etsy, Facebook Marketplace, or specialized agricultural marketplaces. High-quality photos of your products and farm are essential for attracting customers.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Social Media Marketing</h2>
+      <p class="mb-4">Instagram, Facebook, and TikTok are powerful tools for connecting with customers. Share behind-the-scenes content, farming tips, and product updates to build a loyal following. Use hashtags to reach new audiences interested in local food and farming.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">E-commerce Platforms</h2>
+      <p class="mb-4">Platforms like Shopify, WooCommerce, or Square allow you to set up an online store quickly. These platforms handle payments, inventory management, and shipping calculations, making online sales manageable even for small operations.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Packaging and Shipping</h2>
+      <p class="mb-4">Proper packaging is crucial for maintaining product quality during shipping. Invest in insulated boxes, cold packs, and protective materials. Consider offering local delivery or pickup options to reduce shipping costs and build community connections.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Customer Service</h2>
+      <p class="mb-4">Excellent customer service builds trust and encourages repeat purchases. Respond promptly to inquiries, provide clear product descriptions, and handle issues professionally. Consider offering recipes or cooking tips to add value.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Pricing Strategy</h2>
+      <p class="mb-4">Research competitor pricing and factor in your costs, including packaging and shipping. Consider offering bundles, subscriptions, or seasonal boxes to increase average order value and customer loyalty.</p>
+    `,
+    tags: ["Marketing", "E-commerce", "Online Sales", "Digital Farming"]
   },
   {
     title: "Livestock Health: Preventing Common Animal Diseases",
@@ -966,6 +1107,34 @@ export const blogs = [
     image: blog7,
     description:
       "Essential tips on maintaining healthy animals and reducing disease risks on your farm.",
+    author: "Dr. Robert Martinez",
+    date: "February 10, 2025",
+    readTime: "11 min read",
+    content: `
+      <p class="mb-4">Preventing disease is far more cost-effective than treating it. A comprehensive animal health program protects your livestock, ensures food safety, and maintains farm profitability.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Vaccination Programs</h2>
+      <p class="mb-4">Work with your veterinarian to develop a vaccination schedule tailored to your region and livestock type. Common vaccines protect against diseases like blackleg, brucellosis, and respiratory infections. Keep detailed vaccination records for each animal.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Biosecurity Measures</h2>
+      <p class="mb-4">Implement strict biosecurity protocols to prevent disease introduction. This includes quarantining new animals, limiting farm visitors, disinfecting equipment, and maintaining clean facilities. Separate sick animals immediately to prevent disease spread.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Nutrition and Feed Quality</h2>
+      <p class="mb-4">Proper nutrition strengthens immune systems and helps animals resist disease. Ensure feed is stored properly to prevent mold and contamination. Provide clean, fresh water at all times, as dehydration weakens animals' defenses.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Regular Health Monitoring</h2>
+      <p class="mb-4">Daily observation helps detect health issues early. Watch for signs like reduced appetite, lethargy, abnormal behavior, or physical changes. Early detection allows for prompt treatment and prevents disease spread.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Parasite Control</h2>
+      <p class="mb-4">Internal and external parasites can cause significant health problems. Implement regular deworming schedules and use appropriate treatments for ticks, lice, and mites. Rotate pastures to break parasite life cycles.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Stress Management</h2>
+      <p class="mb-4">Stress weakens immune systems and makes animals more susceptible to disease. Minimize stress through proper handling, adequate space, comfortable housing, and consistent routines. Avoid sudden changes in diet or environment.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Working with Veterinarians</h2>
+      <p class="mb-4">Establish a relationship with a local veterinarian who understands your operation. Regular health checks, emergency protocols, and professional advice are invaluable investments in your livestock's health and your farm's success.</p>
+    `,
+    tags: ["Livestock", "Animal Health", "Disease Prevention", "Veterinary Care"]
   },
   {
     title: "Organic Farming: The Growing Trend Toward Chemical-Free Food",
@@ -973,6 +1142,34 @@ export const blogs = [
     image: blog8,
     description:
       "Understand the benefits and challenges of switching to organic farming methods.",
+    author: "Jennifer White",
+    date: "February 5, 2025",
+    readTime: "9 min read",
+    content: `
+      <p class="mb-4">Organic farming is more than a trend—it's a movement toward sustainable, environmentally friendly agriculture that produces healthy food while protecting soil, water, and biodiversity.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">What is Organic Farming?</h2>
+      <p class="mb-4">Organic farming avoids synthetic pesticides, fertilizers, and genetically modified organisms. Instead, it relies on natural processes, crop rotation, composting, and biological pest control to maintain soil fertility and manage pests.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Benefits of Organic Farming</h2>
+      <p class="mb-4">Organic farming improves soil health, reduces water pollution, and supports biodiversity. Organic produce often commands premium prices, and many farmers find greater satisfaction in working with natural systems rather than against them.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">The Transition Process</h2>
+      <p class="mb-4">Transitioning to organic farming typically takes three years. During this period, you must follow organic practices but cannot yet label products as organic. This transition requires patience, learning, and often initial yield reductions as soil health improves.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Organic Certification</h2>
+      <p class="mb-4">To sell products as organic, you must be certified by an accredited organization. This involves detailed record-keeping, annual inspections, and adherence to strict organic standards. Certification costs vary but are often offset by premium prices.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Pest and Weed Management</h2>
+      <p class="mb-4">Organic farmers use integrated pest management (IPM) strategies including beneficial insects, crop rotation, companion planting, and mechanical weed control. These methods require more labor but create more resilient farming systems.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Soil Building</h2>
+      <p class="mb-4">Organic farming focuses on building soil organic matter through composting, cover cropping, and reduced tillage. Healthy soil is the foundation of organic success, providing nutrients naturally and improving water retention.</p>
+      
+      <h2 class="text-2xl font-bold mt-6 mb-4">Market Opportunities</h2>
+      <p class="mb-4">The organic market continues to grow, with consumers increasingly seeking organic products. Direct sales through farmers markets, CSAs, and online platforms allow organic farmers to capture premium prices and build customer relationships.</p>
+    `,
+    tags: ["Organic Farming", "Sustainability", "Certification", "Natural Methods"]
   },
 ];
 

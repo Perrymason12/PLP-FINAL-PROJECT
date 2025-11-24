@@ -23,6 +23,12 @@ const Sidebar = () => {
       label: "List Product",
       icon: assets.list,
     },
+    {
+      path: "/",
+      label: "Back to Home",
+      icon: assets.house,
+      isExternal: true,
+    },
   ];
 
   useEffect(() => {
@@ -68,21 +74,35 @@ const Sidebar = () => {
               </div>
             </div>
             <div className="flex md:flex-col md:gap-x-5 gap-y-8 md:mt-4">
-              {navItems.map((link) => (
-                <NavLink
-                  key={link.label}
-                  to={link.path}
-                  end={link.path === "/owner"}
-                  className={({ isActive }) =>
-                    isActive
-                      ? "flexStart gap-x-2 p-5 lg:pl-12 bold-13 sm:text-sm cursor-pointer h-10 bg-secondary/10 max-md:border-b-4 md:border-r-4 border-secondary"
-                      : "flexStart gap-x-2 lg:pl-12 p-5 bold-13 sm:text-sm cursor-pointer h-10 rounded-xl"
-                  }
-                >
-                  <img src={link.icon} alt={link.label} className="hidden md:block" width={18} />
-                  <div>{link.label}</div>
-                </NavLink>
-              ))}
+              {navItems.map((link) => {
+                if (link.isExternal) {
+                  return (
+                    <button
+                      key={link.label}
+                      onClick={() => navigate(link.path)}
+                      className="flexStart gap-x-2 lg:pl-12 p-5 bold-13 sm:text-sm cursor-pointer h-10 rounded-xl hover:bg-secondary/5 transition-colors w-full text-left"
+                    >
+                      <img src={link.icon} alt={link.label} className="hidden md:block" width={18} />
+                      <div>{link.label}</div>
+                    </button>
+                  );
+                }
+                return (
+                  <NavLink
+                    key={link.label}
+                    to={link.path}
+                    end={link.path === "/owner"}
+                    className={({ isActive }) =>
+                      isActive
+                        ? "flexStart gap-x-2 p-5 lg:pl-12 bold-13 sm:text-sm cursor-pointer h-10 bg-secondary/10 max-md:border-b-4 md:border-r-4 border-secondary"
+                        : "flexStart gap-x-2 lg:pl-12 p-5 bold-13 sm:text-sm cursor-pointer h-10 rounded-xl"
+                    }
+                  >
+                    <img src={link.icon} alt={link.label} className="hidden md:block" width={18} />
+                    <div>{link.label}</div>
+                  </NavLink>
+                );
+              })}
             </div>
           </div>
           <div className="hidden md:flex items-center gap-3 md:bg-primary border-t border-slate-900/15 rounded-b-xl p-2 pl-5 lg:pl-10 md:mt-10">

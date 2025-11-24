@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Title from "../components/Title";
 import { useAppContext } from "../context/AppContext";
 import { api } from "../utils/api";
@@ -6,6 +7,7 @@ import toast from "react-hot-toast";
 
 const MyOrders = () => {
   const { currency, user, getToken } = useAppContext();
+  const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -163,7 +165,12 @@ const MyOrders = () => {
                   <p>{order.status}</p>
                 </div>
               </div>
-              <button className="btn-secondary py-1 text-xs rounded-sm">Track Order</button>
+              <button 
+                onClick={() => navigate(`/track-order/${order._id || order.id}`)}
+                className="btn-secondary py-1 text-xs rounded-sm"
+              >
+                Track Order
+              </button>
             </div>
           </div>
         </div>

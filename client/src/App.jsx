@@ -11,6 +11,7 @@ import Contact from "./pages/Contact.jsx";
 import Cart from "./pages/Cart.jsx";
 import AddressForm from "./pages/AddressForm.jsx";
 import MyOrders from "./pages/MyOrders.jsx";
+import TrackOrder from "./pages/TrackOrder.jsx";
 import { Toaster } from "react-hot-toast";
 import Sidebar from "./components/owner/Sidebar.jsx";
 import Dashboard from "./pages/owner/Dashboard.jsx";
@@ -36,6 +37,7 @@ const App = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="/address-form" element={<AddressForm />} />
         <Route path="/my-orders" element={<MyOrders />} />
+        <Route path="/track-order/:orderId" element={<TrackOrder />} />
         <Route path="/owner" element = {<Sidebar />}>
             <Route index element = {<Dashboard/>}/>
             <Route path="/owner/add-product" element = {<AddProduct/>}/>
