@@ -1,6 +1,7 @@
 import Cart from '../models/Cart.js';
 import Product from '../models/Product.js';
 import User from '../models/User.js';
+import mongoose from 'mongoose';
 import { clerkClient } from '@clerk/clerk-sdk-node';
 
 // Helper function to get or create user
@@ -162,17 +163,42 @@ export const addToCart = async (req, res) => {
       return res.status(500).json({ message: 'Failed to get or create user', error: userError.message });
     }
     
+    // Validate product ID format
+    if (!productId || typeof productId !== 'string') {
+      console.error('Invalid productId type:', typeof productId, productId);
+      return res.status(400).json({ message: 'Product ID is required and must be a string' });
+    }
+
+    // Check if productId is a valid MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+      console.error('Invalid MongoDB ObjectId format:', productId);
+      return res.status(400).json({ 
+        message: 'Invalid product ID format. Product ID must be a valid MongoDB ObjectId.',
+        receivedId: productId,
+        hint: 'Make sure you are using the correct product ID from the database.'
+      });
+    }
+
     // Verify product exists and is in stock
     let product;
     try {
       product = await Product.findById(productId);
     } catch (productError) {
       console.error('Error finding product:', productError);
-      return res.status(400).json({ message: 'Invalid product ID format', error: productError.message });
+      console.error('ProductId that caused error:', productId);
+      return res.status(400).json({ 
+        message: 'Error finding product', 
+        error: productError.message,
+        productId: productId
+      });
     }
     
     if (!product) {
-      return res.status(404).json({ message: 'Product not found' });
+      console.error('Product not found with ID:', productId);
+      return res.status(404).json({ 
+        message: 'Product not found',
+        productId: productId
+      });
     }
     
     if (!product.inStock) {

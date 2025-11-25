@@ -227,6 +227,21 @@ export const AppContextProvider = ({ children }) => {
   const addToCart = async (itemId, size, quantity = 1) => {
     if (!size) return toast.error('Please select a size first');
 
+    // Validate product ID format (MongoDB ObjectId should be 24 hex characters)
+    if (!itemId || typeof itemId !== 'string') {
+      console.error('Invalid product ID:', itemId);
+      toast.error('Invalid product ID. Please refresh the page and try again.');
+      return false;
+    }
+
+    // Check if it's a valid MongoDB ObjectId format (24 hex characters)
+    const objectIdPattern = /^[0-9a-fA-F]{24}$/;
+    if (!objectIdPattern.test(itemId)) {
+      console.error('Product ID is not a valid MongoDB ObjectId:', itemId);
+      toast.error('This product cannot be added to cart. Please ensure products are loaded from the database.');
+      return false;
+    }
+
     // Guest flow: store cart in localStorage
     if (!user) {
       // safe deep clone fallback
